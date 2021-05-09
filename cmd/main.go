@@ -1,0 +1,20 @@
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func uploadFile(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Uploading files")
+}
+
+func setupRoutes() {
+	http.HandleFunc("/upload", uploadFile)
+	http.ListenAndServe(":8080", nil)
+}
+
+func main() {
+	fmt.Println("Go files Upload!")
+	setupRoutes()
+}
