@@ -5,7 +5,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"text/template"
 )
+
+type IndexPage struct{}
 
 func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Uploading files\n")
@@ -35,8 +38,15 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Successfuly upload the file\n")
 }
 
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	p := IndexPage{}
+	t, _ := template.ParseFiles("client/templates/index.html")
+	t.Execute(w, p)
+}
+
 func setupRoutes() {
 	http.HandleFunc("/upload", uploadFile)
+	http.HandleFunc("/", indexHandler)
 	http.ListenAndServe(":8080", nil)
 }
 
